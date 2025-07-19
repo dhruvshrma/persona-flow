@@ -1,0 +1,17 @@
+# Ignore files for Docker build
+.git
+.gitignore
+README.md
+log_mock_service.md
+.pytest_cache
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.env.*
+.DS_Store
+tests/
+run_mock_service.py

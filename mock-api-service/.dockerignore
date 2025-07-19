@@ -1,0 +1,9 @@
+# Ignore local virtual environment
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.env
+.DS_Store

@@ -8,8 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
-
+*.env
+*.python-version
 
 # Plan markdowns 
 *.md
 *.claude 
+*.sh
