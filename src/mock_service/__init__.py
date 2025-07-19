@@ -1,0 +1,1 @@
+# Mock service with strategic flaws for persona testing
