@@ -24,28 +24,28 @@ class MockLLMClientForTesting:
         # Return different responses based on call count for testing
         if self.call_count == 1:
             return """
-{
-  "thought": "I need to search for a wireless mouse since that's my goal.",
-  "tool_name": "search_products",
-  "parameters": {"q": "wireless mouse"}
-}
-"""
+                {
+                "thought": "I need to search for a wireless mouse since that's my goal.",
+                "tool_name": "search_products",
+                "parameters": {"q": "wireless mouse"}
+                }
+            """
         elif self.call_count == 2:
             return """
-{
-  "thought": "The search didn't find anything. Let me try with proper capitalization.",
-  "tool_name": "search_products", 
-  "parameters": {"q": "Wireless Mouse"}
-}
-"""
+                    {
+                    "thought": "The search didn't find anything. Let me try with proper capitalization.",
+                    "tool_name": "search_products", 
+                    "parameters": {"q": "Wireless Mouse"}
+                    }
+                """
         else:
             return """
-{
-  "thought": "Great! I found the mouse. Let me add it to my cart.",
-  "tool_name": "add_to_cart",
-  "parameters": {"item_id": 2, "quantity": 1}
-}
-"""
+                    {
+                    "thought": "Great! I found the mouse. Let me add it to my cart.",
+                    "tool_name": "add_to_cart",
+                    "parameters": {"item_id": 2, "quantity": 1}
+                    }
+                """
 
 
 class TestPersonaFlow:

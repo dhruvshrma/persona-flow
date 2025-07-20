@@ -25,11 +25,6 @@ class TestResult(BaseModel):
 
 
 class Architect:
-    """
-    The high-level planner and synthesizer for the PersonaFlow system.
-    It uses a powerful external SOTA model for creative and analytical tasks.
-    """
-
     def __init__(self):
         # Use HACKATHON_PROJECT_ID from environment
         project_id = os.getenv("HACKATHON_PROJECT_ID")
@@ -39,15 +34,7 @@ class Architect:
     def generate_personas(
         self, market_segment: str, num_personas: int = 5
     ) -> List[Persona]:
-        """
-        Takes a high-level market description and generates a list of
-        specific, structured Persona objects.
-        """
-        print(
-            f"ARCHITECT: Generating {num_personas} personas for market: '{market_segment}'"
-        )
 
-        # System instruction defines the role and format requirements
         system_instruction = """You are an expert market researcher and product strategist.
 Your task is to generate a certain number of distinct user personas based on the following market segment description provided by the user.
 
@@ -56,7 +43,6 @@ The system_prompt should encapsulate their personality, technical skill, goals, 
 
 You MUST respond with ONLY a valid JSON array, where each object in the array that is provided to you."""
 
-        # User prompt is specific to this request
         user_prompt = f"""Generate exactly {num_personas} distinct user personas for the market segment: "{market_segment}"
 
 Return them as a JSON array.  Each persona should be unique and represent different aspects of this market segment."""
@@ -93,13 +79,8 @@ Return them as a JSON array.  Each persona should be unique and represent differ
             return []
 
     def synthesize_report(self, goal: str, test_results: List[TestResult]) -> str:
-        """
-        Takes the raw logs from all agent runs and creates a final,
-        human-readable executive summary.
-        """
         print("ARCHITECT: Synthesizing final report from all test results...")
 
-        # Consolidate all the raw logs into a single block of text
         raw_logs_text = ""
         for result in test_results:
             raw_logs_text += f"\n--- START LOG: {result.persona_name} (Success: {result.was_successful}) ---\n"

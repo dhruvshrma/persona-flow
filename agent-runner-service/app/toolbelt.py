@@ -1,17 +1,13 @@
-# agent-orchestrator/app/toolbelt.py
 import requests
 import json
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 
 class Toolbelt:
-    """A collection of tools that the agent can use to interact with the API."""
-
     def __init__(self, api_base_url: str):
         self.base_url = api_base_url.rstrip("/")
 
     def get_tool_descriptions(self) -> str:
-        """Generates a string describing the available tools for the LLM prompt."""
         descriptions = [
             "get_products(): Lists all available products.",
             "search_products(q: str): Searches for products by a query string.",
@@ -37,8 +33,6 @@ class Toolbelt:
             }
         except Exception as e:
             return {"error": "Exception", "details": str(e)}
-
-    # --- The actual tools the LLM can call ---
 
     def get_products(self) -> Dict[str, Any]:
         return self._make_request("GET", "/products")
