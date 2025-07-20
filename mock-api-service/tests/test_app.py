@@ -1,15 +1,10 @@
-"""
-TDD tests for mock service - testing both excellent and flawed behaviors
-"""
 import pytest
 from fastapi.testclient import TestClient
 
 
 class TestHealthEndpoint:
-    """Test the excellent health check endpoint"""
     
     def test_health_check_returns_200(self):
-        """Health endpoint should return 200 OK - this is our 'excellent' endpoint"""
         from app.api import app
         client = TestClient(app)
         
@@ -17,7 +12,6 @@ class TestHealthEndpoint:
         assert response.status_code == 200
         
     def test_health_check_returns_proper_json(self):
-        """Health check should return well-structured JSON"""
         from app.api import app
         client = TestClient(app)
         
@@ -30,10 +24,8 @@ class TestHealthEndpoint:
 
 
 class TestProductsEndpoint:
-    """Test the excellent products endpoint - should work beautifully"""
     
     def test_products_returns_200(self):
-        """Products endpoint should work perfectly"""
         from app.api import app
         client = TestClient(app)
         
@@ -41,7 +33,6 @@ class TestProductsEndpoint:
         assert response.status_code == 200
         
     def test_products_returns_well_structured_data(self):
-        """Products should return clean, consistent JSON structure"""
         from app.api import app
         client = TestClient(app)
         
@@ -67,10 +58,8 @@ class TestProductsEndpoint:
 
 
 class TestSearchEndpoint:
-    """Test the strategically flawed search endpoint"""
     
     def test_search_works_with_exact_case(self):
-        """Search should work when case matches exactly"""
         from app.api import app
         client = TestClient(app)
         
@@ -80,7 +69,6 @@ class TestSearchEndpoint:
         assert len(data["results"]) > 0
         
     def test_search_fails_with_wrong_case(self):
-        """FLAW: Search should be case-sensitive, frustrating casual users"""
         from app.api import app
         client = TestClient(app)
         
@@ -92,10 +80,8 @@ class TestSearchEndpoint:
 
 
 class TestCartEndpoint:
-    """Test the inconsistent cart endpoint"""
     
     def test_first_cart_add_returns_full_cart(self):
-        """FLAW: First add to cart returns full cart object"""
         from app.api import app
         client = TestClient(app)
         
@@ -106,7 +92,6 @@ class TestCartEndpoint:
         assert "items" in data["cart"]
         
     def test_subsequent_cart_add_returns_just_message(self):
-        """FLAW: Subsequent adds return different format - inconsistent API!"""
         from app.api import app
         client = TestClient(app)
         
@@ -118,4 +103,4 @@ class TestCartEndpoint:
         assert response.status_code == 200
         data = response.json()
         assert "cart" not in data  # Inconsistent! No cart object
-        assert "message" in data   # Just a message instead
+        assert "message" in data   

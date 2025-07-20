@@ -1,6 +1,3 @@
-"""
-Mock API service with strategic flaws for persona testing
-"""
 from fastapi import FastAPI, HTTPException
 from typing import List, Dict, Any
 import time
@@ -53,7 +50,6 @@ PRODUCTS = [
 
 @app.get("/health")
 async def health_check():
-    """EXCELLENT endpoint - perfect health check"""
     return {
         "status": "healthy",
         "service": "mock-api"
@@ -62,7 +58,6 @@ async def health_check():
 
 @app.get("/products")
 async def get_products():
-    """EXCELLENT endpoint - well-structured product listing"""
     return {
         "products": PRODUCTS,
         "total": len(PRODUCTS),
@@ -73,7 +68,6 @@ async def get_products():
 
 @app.get("/search")
 async def search_products(q: str):
-    """FLAWED endpoint - case-sensitive search (frustrates casual users)"""
     # INTENTIONAL FLAW: Case-sensitive search
     results = [
         product for product in PRODUCTS
@@ -112,7 +106,6 @@ async def add_to_cart(item: Dict[str, Any]):
 
 @app.get("/cart")
 async def get_cart():
-    """FLAWED endpoint - artificially slow (tests patience of efficiency-focused users)"""
     # INTENTIONAL FLAW: Artificial delay
     time.sleep(2.5)  # Frustratingly slow!
     
@@ -125,7 +118,7 @@ async def get_cart():
 
 @app.post("/checkout")
 async def checkout(checkout_data: Dict[str, Any]):
-    """FLAWED endpoint - hidden required fields (blocks completion)"""
+    # Intentional flaw: Required fields not documented in API spec. 
     required_fields = ["shipping_address", "billing_address", "tax_id"]
     missing_fields = []
     
@@ -134,7 +127,6 @@ async def checkout(checkout_data: Dict[str, Any]):
             missing_fields.append(field)
     
     if missing_fields:
-        # FLAW: Required fields not documented in API spec!
         raise HTTPException(
             status_code=400,
             detail={
@@ -149,8 +141,7 @@ async def checkout(checkout_data: Dict[str, Any]):
 
 @app.get("/admin/users")
 async def admin_users():
-    """FLAWED endpoint - weak security with information leakage"""
-    # FLAW: Accessible endpoint that reveals system info in error
+    # Intentional flaw: Accessible endpoint that reveals system info in error
     raise HTTPException(
         status_code=403,
         detail="Access denied. Admin database connection requires elevated privileges. Contact system administrator for user table access."
@@ -159,14 +150,14 @@ async def admin_users():
 
 @app.get("/products/{product_id}/total_cost")
 async def get_product_total_cost(product_id: int):
-    """FLAWED endpoint - reveals hidden fees (frustrates budget-conscious users)"""
+    # Intentional flaw: Reveals hidden fees (frustrates budget-conscious users)
     product = next((p for p in PRODUCTS if p["id"] == product_id), None)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     
     base_price = product["price"]
     
-    # FLAW: Hidden fees revealed only when explicitly requested
+    # Intentional flaw: Hidden fees revealed only when explicitly requested
     fees = [
         {"type": "processing_fee", "amount": base_price * 0.03},
         {"type": "handling_fee", "amount": 5.99},

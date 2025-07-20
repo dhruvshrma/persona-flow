@@ -1,16 +1,10 @@
-"""
-Advanced strategic flaws for testing different persona types
-"""
 import pytest
 import time
 from fastapi.testclient import TestClient
 
 
-class TestPerformanceFlaws:
-    """Test endpoints with performance issues - frustrates efficiency-focused users"""
-    
+class TestPerformanceFlaws:    
     def test_cart_endpoint_is_artificially_slow(self):
-        """FLAW: Cart endpoint should be slow (tests patience)"""
         from app.api import app
         client = TestClient(app)
         
@@ -22,7 +16,6 @@ class TestPerformanceFlaws:
         assert duration > 2.0  # Should take at least 2 seconds (artificial delay)
         
     def test_slow_cart_returns_proper_data(self):
-        """Cart should return proper data despite being slow"""
         from app.api import app
         client = TestClient(app)
         
@@ -33,10 +26,8 @@ class TestPerformanceFlaws:
 
 
 class TestHiddenComplexityFlaws:
-    """Test endpoints with hidden required fields - blocks task completion"""
     
     def test_checkout_fails_without_hidden_fields(self):
-        """FLAW: Checkout requires undocumented fields"""
         from app.api import app
         client = TestClient(app)
         
@@ -45,7 +36,6 @@ class TestHiddenComplexityFlaws:
         assert response.status_code == 400
         
     def test_checkout_error_reveals_hidden_requirements(self):
-        """Error should reveal the hidden required fields"""
         from app.api import app
         client = TestClient(app)
         
@@ -60,10 +50,8 @@ class TestHiddenComplexityFlaws:
 
 
 class TestDeveloperFrustrationFlaws:
-    """Test missing features that frustrate developer-type users"""
     
     def test_bulk_operations_not_supported(self):
-        """FLAW: No bulk cart operations (developers expect this)"""
         from app.api import app
         client = TestClient(app)
         
@@ -71,7 +59,6 @@ class TestDeveloperFrustrationFlaws:
         assert response.status_code == 404  # Not implemented!
         
     def test_no_api_versioning(self):
-        """FLAW: No API versioning support"""
         from app.api import app
         client = TestClient(app)
         
@@ -80,10 +67,8 @@ class TestDeveloperFrustrationFlaws:
 
 
 class TestSecurityGaps:
-    """Test security issues that security-minded users will discover"""
     
     def test_admin_endpoint_has_weak_permissions(self):
-        """FLAW: Admin endpoint accessible without proper auth"""
         from app.api import app
         client = TestClient(app)
         
@@ -92,7 +77,6 @@ class TestSecurityGaps:
         assert response.status_code == 403  # Forbidden, but reveals endpoint exists
         
     def test_admin_error_leaks_information(self):
-        """Security flaw: Error messages leak system information"""
         from app.api import app
         client = TestClient(app)
         
@@ -104,10 +88,8 @@ class TestSecurityGaps:
 
 
 class TestPricingFlaws:
-    """Test hidden costs that frustrate budget-conscious users"""
     
     def test_products_hide_additional_fees(self):
-        """FLAW: Products don't show total cost with fees"""
         from app.api import app
         client = TestClient(app)
         
@@ -121,7 +103,6 @@ class TestPricingFlaws:
         assert len(data["fees"]) > 0  # Surprise fees!
         
     def test_hidden_fees_include_processing_and_handling(self):
-        """Budget users discover multiple hidden fees"""
         from app.api import app
         client = TestClient(app)
         

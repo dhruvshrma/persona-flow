@@ -12,6 +12,7 @@ dependencies = [
     "requests>=2.32.3",
     "python-dotenv>=1.0.0",
     "google-auth>=2.0.0",
+    "black>=25.1.0",
 ]
 
 [build-system]
