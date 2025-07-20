@@ -15,3 +15,6 @@ wheels/
 *.md
 *.claude 
 *.sh
+node_modules/
+.next
+*.zip
