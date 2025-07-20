@@ -73,18 +73,18 @@ class LLMClient(Protocol):
 # Parsing and packaging functions (independent of client implementation)
 def clean_json_response(raw_text: str) -> str:
     """Clean JSON response by removing markdown blocks."""
-    # Handle ```json blocks
-    json_match = re.search(r"```json\s*(\{.*?\})\s*```", raw_text, re.DOTALL)
+    # Handle ```json blocks - use greedy matching to get complete JSON
+    json_match = re.search(r"```json\s*(\{.*\})\s*```", raw_text, re.DOTALL)
     if json_match:
         return json_match.group(1).strip()
 
-    # Handle ``` blocks
-    json_match = re.search(r"```\s*(\{.*?\})\s*```", raw_text, re.DOTALL)
+    # Handle ``` blocks - use greedy matching to get complete JSON
+    json_match = re.search(r"```\s*(\{.*\})\s*```", raw_text, re.DOTALL)
     if json_match:
         return json_match.group(1).strip()
 
-    # Look for JSON pattern
-    json_match = re.search(r"(\{.*?\})", raw_text, re.DOTALL)
+    # Look for JSON pattern - use greedy matching to get complete JSON
+    json_match = re.search(r"(\{.*\})", raw_text, re.DOTALL)
     if json_match:
         return json_match.group(1).strip()
 
@@ -145,6 +145,7 @@ def create_vertex_ai_payload(
     request: LLMRequest,
     response_schema: Optional[Dict[str, Any]] = None,
     system_instruction: Optional[str] = None,
+    include_thinking_config: bool = True,
 ) -> Dict[str, Any]:
     """Create payload for Google Vertex AI format with optional structured output and system instruction."""
     generation_config = {
@@ -157,7 +158,10 @@ def create_vertex_ai_payload(
     if response_schema:
         generation_config["responseMimeType"] = "application/json"
         generation_config["responseSchema"] = response_schema
-    generation_config["thinkingConfig"] = {"thinkingBudget": 0}
+    
+    # Only add thinkingConfig for real Vertex AI, not for Gemma service
+    if include_thinking_config:
+        generation_config["thinkingConfig"] = {"thinkingBudget": 0}
 
     payload = {
         "contents": [{"role": "user", "parts": [{"text": request.prompt}]}],
@@ -231,8 +235,8 @@ class LLMServiceClient:
             # Create typed request
             request = LLMRequest(prompt=prompt, model=self.model_name)
 
-            # Use Vertex AI format as per hackathon starter
-            payload = create_vertex_ai_payload(request)
+            # Use Vertex AI format as per hackathon starter, but exclude thinkingConfig for Gemma
+            payload = create_vertex_ai_payload(request, include_thinking_config=False)
             endpoint_url = (
                 f"{self.gemma_url}/v1beta/models/{self.model_name}:generateContent"
             )

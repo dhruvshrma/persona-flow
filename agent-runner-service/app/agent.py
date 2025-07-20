@@ -66,7 +66,10 @@ class Agent:
             llm_output_str = self.llm_client.invoke(prompt)
 
             try:
-                llm_response = LLMResponse.model_validate_json(llm_output_str)
+                # Clean the JSON response to handle markdown code blocks
+                from .clients import clean_json_response
+                cleaned_json = clean_json_response(llm_output_str)
+                llm_response = LLMResponse.model_validate_json(cleaned_json)
             except Exception as e:
                 print(f"ERROR: LLM output failed validation: {e}")
                 print(f"LLM Raw Output:\n{llm_output_str}")
