@@ -407,10 +407,15 @@ export default function PersonaFlowApp() {
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Generating Personas...
                     </>
-                  ) : (
+                  ) : phase === "testing" ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Running Tests...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Tests Complete
                     </>
                   )}
                 </Button>

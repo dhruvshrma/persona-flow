@@ -18,6 +18,9 @@ This isn't just automated testing—it's **automated user empathy at scale**.
 - **Continuous validation**: Integrate directly into CI/CD for every deployment
 - **Cost efficiency**: Replace expensive user testing sessions with automated persona agents
 
+## Demo 
+[Demo video](https://www.dropbox.com/scl/fi/9fmwzyjm7qhnnqqco4mup/screen_recording_persona_flow.mov?rlkey=ivhoj7pok4f25399k37tjsfaf&st=i1cz2i30&dl=0)
+
 ## Architecture Overview
 
 PersonaFlow follows a microservices architecture with five main components working together to provide end-to-end AI-powered API testing.
