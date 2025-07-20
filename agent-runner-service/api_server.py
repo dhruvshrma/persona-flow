@@ -128,7 +128,6 @@ async def broadcast_log(session_id: str, type: str, message: str, persona_name: 
 
 @app.get("/")
 async def root():
-    """Health check endpoint."""
     return {
         "service": "PersonaFlow API",
         "status": "running",
@@ -142,7 +141,6 @@ async def root():
 
 @app.post("/api/generate-personas")
 async def generate_personas(request: PersonaRequest):
-    """Generate personas using Vertex AI Architect agent."""
     try:
         print(f"Generating {request.num_personas} personas for: {request.market_segment}")
         
@@ -173,7 +171,6 @@ async def generate_personas(request: PersonaRequest):
 
 @app.post("/api/run-tests")
 async def start_test_session(request: TestRequest):
-    """Start a new persona testing session."""
     try:
         session_id = str(uuid.uuid4())
         
@@ -199,7 +196,6 @@ async def start_test_session(request: TestRequest):
 
 @app.get("/api/test-sessions/{session_id}")
 async def get_session_status(session_id: str):
-    """Get the current status of a test session."""
     if session_id not in active_sessions:
         raise HTTPException(status_code=404, detail="Session not found")
     
@@ -217,7 +213,6 @@ async def get_session_status(session_id: str):
 
 @app.websocket("/api/test-sessions/{session_id}/logs")
 async def websocket_logs(websocket: WebSocket, session_id: str):
-    """WebSocket endpoint for real-time log streaming."""
     print(f"🔌 WebSocket connection attempt for session: {session_id}")
     
     # Check if session exists
@@ -248,7 +243,6 @@ async def websocket_logs(websocket: WebSocket, session_id: str):
 
 # Delayed start to allow WebSocket connection
 async def delayed_test_session(session_id: str, request: TestRequest):
-    """Start test session with user-friendly delay to allow WebSocket connection."""
     try:
         # Give immediate feedback that we're preparing
         await broadcast_log(session_id, "info", "Preparing test environment...")
@@ -269,7 +263,6 @@ async def delayed_test_session(session_id: str, request: TestRequest):
 
 # Background task for running persona tests
 async def run_test_session(session_id: str, request: TestRequest):
-    """Run the complete persona testing workflow in background."""
     try:
         await broadcast_log(session_id, "info", f"Starting test session with {len(request.personas)} personas")
         
@@ -338,7 +331,6 @@ async def run_test_session(session_id: str, request: TestRequest):
         active_sessions[session_id]["status"] = "failed"
 
 async def run_persona_test_async(session_id: str, persona: Persona, goal: str, toolbelt: Toolbelt, llm_client: LLMServiceClient, max_steps: int = 8) -> Optional[TestResult]:
-    """Run a single persona test with real-time logging."""
     try:
         persona_name = persona.name
         await broadcast_log(session_id, "thinking", f"{persona_name} is analyzing the goal: {goal}", persona_name)

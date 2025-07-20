@@ -36,16 +36,14 @@ class Architect:
     ) -> List[Persona]:
 
         system_instruction = """You are an expert market researcher and product strategist.
-Your task is to generate a certain number of distinct user personas based on the following market segment description provided by the user.
+Your task is to generate a certain number of distinct user personas based on the following market segment description provided by the user. They might also provide information on what specific aspect of the application they are looking to test. 
 
 For each persona, you must create a name and a detailed system_prompt that a future AI agent will use.
 The system_prompt should encapsulate their personality, technical skill, goals, and pain points.
 
 You MUST respond with ONLY a valid JSON array, where each object in the array that is provided to you."""
 
-        user_prompt = f"""Generate exactly {num_personas} distinct user personas for the market segment: "{market_segment}"
-
-Return them as a JSON array.  Each persona should be unique and represent different aspects of this market segment."""
+        user_prompt = f"""Generate exactly {num_personas} distinct user personas for the market segment: "{market_segment}"""
 
         try:
             # Use structured output with the exact schema that worked in playground
@@ -54,12 +52,9 @@ Return them as a JSON array.  Each persona should be unique and represent differ
                 response_schema=PERSONA_RESPONSE_SCHEMA,
                 system_instruction=system_instruction,
             )
-            print(f"DEBUG: Raw LLM response: {response_str}")
 
             # Parse the JSON string into Python objects
             personas_data = json.loads(response_str)
-            print(f"DEBUG: Parsed JSON: {personas_data}")
-            print(f"DEBUG: Type: {type(personas_data)}")
             print(
                 f"DEBUG: Number of personas: {len(personas_data) if isinstance(personas_data, list) else 'Not a list'}"
             )

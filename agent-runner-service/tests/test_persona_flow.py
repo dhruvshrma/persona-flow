@@ -194,6 +194,7 @@ class TestPersonaFlow:
         assert "cart" in first_data
         assert "cart" not in second_data  # Inconsistent!
 
+    @pytest.skip(reason = "Integration Test")
     def test_raw_gemma_response_structure(self):
         ## Need this to see what the raw response looks like.
         mock_api_url = os.environ.get("MOCK_API_URL")
@@ -240,7 +241,7 @@ class TestPersonaFlow:
         for i, match in enumerate(json_matches):
             print(f"JSON block {i+1}: characters {match.start()}-{match.end()}")
             print(f"Content: {match.group()[:]}..")
-
+    @pytest.skip(reason="Integration test")
     def test_full_agent_run_with_deployed_services(self):
         mock_api_url = os.environ.get("MOCK_API_URL")
         gemma_url = os.environ.get("GEMMA_URL")
